@@ -1,6 +1,7 @@
 // Install EJS, Express, and MongoDB in Terminal
 
 const express = require("express");
+const req = require("express/lib/request");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -26,20 +27,40 @@ const Country = mongoose.model("Country", countrySchema, "Countries");
 
 // Create a POST route for "/add/country" that adds a country using the request body (3 points)
 // Use postman to add at least THREE different countries
-
+app.post("/add/country",async(req,res)=>{
+  const place = await new Country({
+  country: req.body.country,
+  flagURL: req.body.country,
+  population:req.body.country,
+  officialLanguage:req.body.officialLanguage,
+  hasNuclearWeapons:req.body.hasNuclearWeapons
+  }).save()
+  res.json(place);
+})
 
 // Create a GET route for "/" that renders countries.ejs with every country from the Countries collection (1 point)
-
+app.get("/",async(req,res)=>{
+  const data = await Country.find({})
+  res.render("home.ejs",{data})
+})
 
 // Go to countries.ejs and follow the tasks there (2 points)
 
 
 // Create a dynamic PATCH route handler for "/update/{name}" that modifies the population of the country specified in the path (3 points)
 // Test this route on post man
+app.patch("update/:name", async(req,res)=> {
+  const response = await Country.findOneAndUpdate({name:req.params.name})
+  res.json(response)
+})
 
 
 
 // Create a DELETE route handler for "/delete/country" that deletes a country of your choice (3 points)
+app.delete("/delete/country",async(req,res)=>{
+  const response = await Country.findOneAndDelete({country:req.params.country})
+  res.json(response)
+})
 // Test this route on post man
 
 
