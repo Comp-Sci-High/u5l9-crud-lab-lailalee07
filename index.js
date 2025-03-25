@@ -30,8 +30,8 @@ const Country = mongoose.model("Country", countrySchema, "Countries");
 app.post("/add/country",async(req,res)=>{
   const place = await new Country({
   country: req.body.country,
-  flagURL: req.body.country,
-  population:req.body.country,
+  flagURL: req.body.flagURL,
+  population:req.body.popu,
   officialLanguage:req.body.officialLanguage,
   hasNuclearWeapons:req.body.hasNuclearWeapons
   }).save()
@@ -41,7 +41,7 @@ app.post("/add/country",async(req,res)=>{
 // Create a GET route for "/" that renders countries.ejs with every country from the Countries collection (1 point)
 app.get("/",async(req,res)=>{
   const data = await Country.find({})
-  res.render("home.ejs",{data})
+  res.render("countries.ejs",{data})
 })
 
 // Go to countries.ejs and follow the tasks there (2 points)
@@ -67,7 +67,7 @@ app.delete("/delete/country",async(req,res)=>{
 async function startServer() {
   
     // add your SRV string with a database called countries
-  await mongoose.connect("...");
+  await mongoose.connect("mongodb+srv://SE12:CSH2025@cluster0.l5rhq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
   app.listen(3000, () => {
     console.log("Server is running");
